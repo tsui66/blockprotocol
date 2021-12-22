@@ -28,17 +28,17 @@ export const Snippet: React.VFC<SnippetProps> = ({
   language,
 }) => {
   const grammar = Prism.languages[language];
-  if (!grammar) {
-    return <code className={className}>source</code>;
-  }
 
-  return (
+  const codeNode = grammar ? (
     <code
-      className={className}
       // eslint-disable-next-line react/no-danger -- trust prism to properly escape the source
       dangerouslySetInnerHTML={{
         __html: Prism.highlight(source, grammar, language),
       }}
     />
+  ) : (
+    <code>{source}</code>
   );
+
+  return <pre className={className}>{codeNode}</pre>;
 };

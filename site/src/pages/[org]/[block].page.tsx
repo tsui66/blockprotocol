@@ -141,12 +141,11 @@ const Block: NextPage = () => {
               style={{ height: 320, fontSize: 14 }}
               className={tw`rounded-2xl bg-gray-800 p-3 w-full`}
             >
-              <pre className={tw`font-mono overflow-scroll h-full`}>
-                <Snippet
-                  source={JSON.stringify(schema, null, 2)}
-                  language="json"
-                />
-              </pre>
+              <Snippet
+                className={tw`font-mono overflow-scroll h-full`}
+                source={JSON.stringify(schema, null, 2)}
+                language="json"
+              />
             </div>
           </div>
         </div>

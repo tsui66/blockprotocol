@@ -1,10 +1,55 @@
 import slugify from "slugify";
-import { HTMLAttributes, HTMLProps, ReactNode } from "react";
-import { TypographyProps, Typography, Box, Paper } from "@mui/material";
+import { HTMLAttributes, HTMLProps, ReactNode, VFC } from "react";
+import { TypographyProps, Typography, Box, Paper, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { Link } from "../components/Link";
 import { InfoCardWrapper } from "../components/InfoCard/InfoCardWrapper";
 import { InfoCard } from "../components/InfoCard/InfoCard";
 import { Snippet } from "../components/Snippet";
+
+const useCodeSnippetStyles = makeStyles<Theme>((theme) => ({
+  snippet: {
+    overflow: "scroll",
+    display: "block",
+    fontSize: "80%",
+    background: "#000",
+    padding: theme.spacing(3),
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderRadius: "8px",
+    textShadow: "none",
+    marginBottom: 2,
+  },
+}));
+
+const MdxCodeBlock: VFC<HTMLAttributes<HTMLElement>> = ({
+  className,
+  children,
+}) => {
+  const isLanguageBlockFunction = className === "language-block-function";
+  const { snippet: snippetClassNames } = useCodeSnippetStyles();
+
+  if (isLanguageBlockFunction) {
+    const anchor = `${children}`.match(/^[\w]+/)?.[0] ?? "";
+    return (
+      <Box
+        id={anchor}
+        component="code"
+        sx={{ fontWeight: "bold", color: "#d18d5b" }}
+      >
+        <Link href={`#${anchor}`}>{children}</Link>
+      </Box>
+    );
+  }
+
+  return (
+    <Snippet
+      className={`${snippetClassNames} ${className}`}
+      source={`${children}`}
+      language={className?.replace("language-", "") ?? ""}
+    />
+  );
+};
 
 const stringifyChildren = (node: ReactNode): string => {
   if (typeof node === "string") {
@@ -167,43 +212,5 @@ export const mdxComponents: Record<string, React.ReactNode> = {
     // Delegate full control to code for more styling options
     return props.children;
   },
-  code: (props: HTMLAttributes<HTMLElement>) => {
-    const isLanguageBlockFunction =
-      props.className === "language-block-function";
-    if (isLanguageBlockFunction) {
-      const anchor = `${props.children}`.match(/^[\w]+/)?.[0] ?? "";
-      return (
-        <Box
-          id={anchor}
-          component="code"
-          sx={{ fontWeight: "bold", color: "#d18d5b" }}
-        >
-          <Link href={`#${anchor}`}>{props.children}</Link>
-        </Box>
-      );
-    }
-    return (
-      <Box
-        component="pre"
-        sx={(theme) => ({
-          overflow: "scroll",
-          display: "block",
-          fontSize: "80%",
-          color: theme.palette.purple[700],
-          background: "#000",
-          padding: theme.spacing(2),
-          borderWidth: 1,
-          borderStyle: "solid",
-          borderRadius: "8px",
-          textShadow: "none",
-          marginBottom: 2,
-        })}
-      >
-        <Snippet
-          source={`${props.children}`}
-          language={props.className?.replace("language-", "") ?? ""}
-        />
-      </Box>
-    );
-  },
+  code: MdxCodeBlock,
 };
