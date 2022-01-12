@@ -4,6 +4,7 @@ import { Tabs, Tab } from "@mui/material";
 type BlockDataTabsProps = {
   blockDataTab: number;
   setBlockDataTab: (newValue: number) => void;
+  tabItems: { label: string; value: number }[];
   modalOpen?: boolean;
 };
 
@@ -11,6 +12,7 @@ export const BlockDataTabs: VoidFunctionComponent<BlockDataTabsProps> = ({
   blockDataTab,
   setBlockDataTab,
   modalOpen,
+  tabItems,
 }) => {
   return (
     <Tabs
@@ -47,8 +49,9 @@ export const BlockDataTabs: VoidFunctionComponent<BlockDataTabsProps> = ({
         },
       })}
     >
-      <Tab label="Data Source" />
-      <Tab label="Block Schema" />
+      {tabItems.map(({ label, value }) => (
+        <Tab key={value} label={label} value={value} />
+      ))}
     </Tabs>
   );
 };

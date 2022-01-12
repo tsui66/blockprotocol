@@ -15,7 +15,7 @@ export type BlockVariant = {
 export type BlockMetadata = {
   author?: string;
   description?: string;
-  displayName?: string;
+  displayName: string;
   externals?: Record<string, string>;
   icon?: string;
   image?: string;
