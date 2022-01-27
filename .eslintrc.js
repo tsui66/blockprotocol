@@ -169,6 +169,10 @@ module.exports = {
       },
     },
     {
+      files: ["packages/blockprotocol/*.js"],
+      parser: "espree",
+    },
+    {
       files: ["packages/blockprotocol/**"],
       parserOptions: {
         project: ["packages/blockprotocol/tsconfig.json"],
