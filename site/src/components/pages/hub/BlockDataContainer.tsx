@@ -268,4 +268,3 @@ export const BlockDataContainer: VoidFunctionComponent<
     </>
   );
 };
-Copied;
