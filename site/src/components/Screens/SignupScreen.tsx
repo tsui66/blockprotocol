@@ -4,7 +4,7 @@ import { apiClient } from "../../lib/apiClient";
 import { Button } from "../Button";
 import { TextField } from "../TextField";
 import { Link } from "../Link";
-import { BlockProtocolIcon } from "../SvgIcon/BlockProtocolIcon";
+import { BlockProtocolIcon } from "../icons";
 import { useEmailTextField } from "../hooks/useEmailTextField";
 import { VerificationCodeInfo } from "./VerificationCodeScreen";
 
@@ -54,11 +54,7 @@ export const SignupScreen: VFC<SignupScreenProps> = ({
       setSigningUp(false);
 
       if (error) {
-        if (error.response?.data.errors) {
-          setApiErrorMessage(error.response.data.errors.map(({ msg }) => msg));
-        } else {
-          throw error;
-        }
+        setApiErrorMessage(error.message);
       } else if (verificationCodeInfo) {
         onSignup({ verificationCodeInfo, email: emailValue });
       }

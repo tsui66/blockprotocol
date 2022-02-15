@@ -4,7 +4,7 @@ import { formatDistance } from "date-fns";
 
 import { Link } from "./Link";
 import { Spacer } from "./Spacer";
-import { BlockProtocolLogoIcon } from "./SvgIcon/BlockProtocolLogoIcon";
+import { BlockProtocolLogoIcon } from "./icons";
 import { ExpandedBlockMetadata as BlockMetadata } from "../lib/blocks";
 
 type BlockCardProps = {
@@ -18,6 +18,11 @@ const blockWidthStyles = {
   /** @todo: set min-width when parent grid has been refactored to use custom breakpoints */
   // minWidth: 288,
   width: "100%",
+};
+
+const cardHoverTransition = {
+  duration: 300,
+  easing: "ease",
 };
 
 const BlockCardLoading = () => {
@@ -84,22 +89,44 @@ export const BlockCard: VFC<BlockCardProps> = ({ loading, data }) => {
       <Box
         sx={{
           ...blockWidthStyles,
+          position: "relative",
           borderRadius: "8px",
-          boxShadow: 1,
           transition: ({ transitions }) =>
-            transitions.create(["box-shadow", "transform"], {
-              duration: 300,
-              easing: "ease",
-            }),
+            transitions.create(["transform"], cardHoverTransition),
           backgroundColor: ({ palette }) => palette.common.white,
-          "&:hover": {
+          cursor: "pointer",
+          "&::before, &::after": {
+            content: `""`,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+            borderRadius: "8px",
+            transition: ({ transitions }) =>
+              transitions.create(["opacity"], cardHoverTransition),
+          },
+          "&::before": {
+            boxShadow: 1,
+            opacity: 1,
+          },
+          "&::after": {
             boxShadow: 4,
+            opacity: 0,
+          },
+          "&:hover": {
             "& .block-card__name": {
               color: ({ palette }) => palette.purple[600],
             },
-            transform: "scale(1.05)",
+            transform: "scale(1.03)",
+            "&::before": {
+              opacity: 0,
+            },
+            "&::after": {
+              opacity: 1,
+            },
           },
-          cursor: "pointer",
         }}
       >
         <Box

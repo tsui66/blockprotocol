@@ -7,6 +7,7 @@ const child_process = require("child_process");
 const fs = require("fs");
 const pacote = require("pacote");
 const path = require("path");
+const untildify = require("untildify");
 
 const exec = promisify(child_process.exec);
 
@@ -20,9 +21,10 @@ const templatePackageName = "block-template";
     process.exit();
   }
 
-  const blockPath = process.argv[3] ?? blockName;
+  // @todo: replace with `process.argv[3] ?? blockName` after dropping Node 12 support
+  const blockPath = process.argv[3] ? process.argv[3] : blockName;
 
-  const resolvedBlockPath = path.resolve(blockPath);
+  const resolvedBlockPath = path.resolve(untildify(blockPath));
 
   try {
     fs.statSync(resolvedBlockPath);
@@ -36,7 +38,9 @@ const templatePackageName = "block-template";
 
   console.log("Downloading template...");
 
-  await pacote.extract(templatePackageName, resolvedBlockPath);
+  await pacote.extract(templatePackageName, resolvedBlockPath, {
+    registry: process.env.NPM_CONFIG_REGISTRY,
+  });
 
   console.log("Updating files...");
   try {
