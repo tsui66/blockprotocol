@@ -143,7 +143,6 @@ const Dashboard: AuthWallPageContent = ({ user }) => {
               sm: "1fr 1fr",
               md: "1fr 1fr 1fr",
             }}
-            // alignItems="flex-start"
             columnGap={2}
             rowGap={3}
             mb={3}
