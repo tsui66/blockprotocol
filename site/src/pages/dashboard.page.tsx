@@ -144,6 +144,7 @@ const Dashboard: AuthWallPageContent = ({ user }) => {
             }}
             alignItems="flex-start"
             columnGap={2}
+            rowGap={3}
             mb={3}
           >
             {getDashboardPrimaryCardData(openSchemaModal).map(
@@ -163,6 +164,7 @@ const Dashboard: AuthWallPageContent = ({ user }) => {
             }}
             alignItems="flex-start"
             columnGap={3}
+            rowGap={3}
             paddingBottom={4}
           >
             {getDashboardSecondaryCardData(`/@${shortname}`).map(
